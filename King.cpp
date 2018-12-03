@@ -20,7 +20,7 @@ bool King::isMoveLegal(int xTranslation, int yTranslation) {
     	valid = false; // Only 1 step allowed horizontally
     if (abs(yTranslation) > 1)
 		valid = false; // Only 1 step allowed vertically
-    if (hMove == 0 && vMove == 0)
+    if (xTranslation == 0 && yTranslation == 0)
     	valid = false; // If the position does not change at all
     return valid;
 }
