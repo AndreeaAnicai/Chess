@@ -7,8 +7,7 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-#include "piece.h"
-using namespace std;
+#include "Piece.h"
 
 class Bishop : public Piece
 {
