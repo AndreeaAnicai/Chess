@@ -25,8 +25,6 @@ public:
     bool isWhite();
     // Returns letter that represents piece name
     char getPieceName();
-    // Returns colour as a char W/B
-    char getPieceColour();
     // Counter that increments whenever piece moves
     void moveCounter();
     // Return total number of moves for piece
@@ -51,7 +49,7 @@ protected:
     int yCoord; //rank;
     bool isWhite;
     bool isFirstMove;
-    int moveCount;
+    int counter;
     char name; // W or B
 
 }; // Piece class

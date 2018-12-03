@@ -7,25 +7,22 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-#include <iostream>
 #include "piece.h"
 using namespace std;
 
 class Bishop : public Piece
 {
 public:
-	// Inherits default constructor from Piece (isWhite/x/y)
-	Bishop();
+	// Inherits default constructor from Piece (x/y/colour/name)
+	Bishop(int xCoord, int yCoord, bool colour);
 
 	// Inherits default virtual deconstructor from Piece
 	~Bishop();
 
 	// Check if Bishop can move to destination based on its rules
-	// Can only move diagonally 
-	bool checkMoveValid(string destination) const;
+	// Bishop moves any number of square on diagonal (abs(x) == abs(y))
+	bool isMoveLegal(int xTranslation, int yTranslation);
 
-	// Displays colour and 'B' when printed
-	void printPiece() const;
 
 }; // Bishop
 
