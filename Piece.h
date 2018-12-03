@@ -3,6 +3,7 @@
 	This is the interface for the class Piece
 	This is intended to be used as a base class to
 	derive classes for all chess pieces 
+	ABSTRACT CLASS
 */
 /*****************************************************/
 
@@ -42,6 +43,7 @@ public:
     // Check if trajectory is blocked by any piece
     virtual bool isPathClear(int xTranslation, int yTranslation, ChessPiece* targetPiece, ChessPiece *board[X_MAX][Y_MAX]);
     // Check if the move is allowed by each piece's rules
+    // SET AS PURE VIRTUAL FUNCTION
     virtual bool isMoveLegal(int xTranslation, int yTranslation) const = 0;
 
 protected:
@@ -51,7 +53,6 @@ protected:
     bool isFirstMove;
     int moveCount;
     char name; // W or B
-
 
 }; // Piece class
 
