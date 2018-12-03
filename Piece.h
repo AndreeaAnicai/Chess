@@ -45,8 +45,8 @@ public:
     virtual bool isMoveLegal(int xTranslation, int yTranslation) const = 0;
 
 protected:
-    int xCoord; //file
-    int yCoord; //rank;
+    int xCoord; 
+    int yCoord; 
     bool isWhite;
     bool isFirstMove;
     int counter;

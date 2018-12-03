@@ -14,7 +14,7 @@ Knight::~Knight() {
     // Body intentionally empty
 }
 
-bool Knight::pathIsClear(int xTranslation, int yTranslation, ChessPiece* targetPiece, ChessPiece *board[X_MAX][Y_MAX]) override {
+bool Knight::isPathClear(int xTranslation, int yTranslation, ChessPiece* targetPiece, ChessPiece *board[X_MAX][Y_MAX]) {
     bool valid = true;
     // Skips the checking of pieces on the way
     if (targetPiece != NULL && (targetPiece->isWhite() == isWhite)) {
@@ -23,7 +23,7 @@ bool Knight::pathIsClear(int xTranslation, int yTranslation, ChessPiece* targetP
     return valid;
 }
     
-bool Knight::displacementOK(int xTranslation, int yTranslation) {
+bool Knight::isMoveLegal(int xTranslation, int yTranslation);(int xTranslation, int yTranslation) {
     bool valid = true;
     if (abs(xTranslation) != 1 && abs(xTranslation) != 2) {
         valid = false;

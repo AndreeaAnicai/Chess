@@ -19,7 +19,7 @@ public:
 
     // Check if King can move to destination based on its rules
 	// King moves 1 square only in each direction)
-    bool isMoveLegal(int xTranslation, int yTranslation);
+    bool isMoveLegal(int xTranslation, int yTranslation) override;
 };
 
-#endif
+#endif // KING_H

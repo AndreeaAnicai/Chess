@@ -20,9 +20,7 @@ public:
 
 	// Check if Bishop can move to destination based on its rules
 	// Bishop moves any number of square on diagonal (abs(x) == abs(y))
-	bool isMoveLegal(int xTranslation, int yTranslation);
+	bool isMoveLegal(int xTranslation, int yTranslation) override;
+}; 
 
-
-}; // Bishop
-
-#endif
+#endif // BISHOP_H
