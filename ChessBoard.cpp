@@ -177,22 +177,6 @@ bool ChessBoard::isTurnCorrect(bool isWhite) {
     }
     return true;
 }
-
-void ChessBoard::makeMove(int source[2], int destination[2], Piece* playerPiece) {
-    // Set target piece 
-    Piece* targetPiece = board[destination[0]][destination[1]];
-    // If target not null -> attempt move and check if legal
-    if (targetPiece != NULL)
-        cerr << " taking " << printPieceColour(targetPiece) << "'s " << printPieceName(targetPiece);
-    // Step into future 
-    tryMove(source,destination,playerPiece);
-    // If pawn/ king/ rook-> no longer first move 
-    char name = playerPiece->getPieceName();
-    if ((name == 'P') || (name == 'K') || (name == 'R'))
-        playerPiece->updateFirstMove();
-    // Increment turn
-    turn++;
-}
 void ChessBoard::tryMove(int source[2], int destination[2], Piece* playerPiece) {
     // Get coordinates from arrays
     int xSource = source[0];
@@ -214,6 +198,21 @@ void ChessBoard::undoMove(int source[2], int destination[2], Piece* playerPiece)
     board[xSource][ySource] = board[xDestination][yDestination];
     board[xDestination][yDestination] = NULL;
     playerPiece->setXYCoord(xSource, ySource);
+}
+void ChessBoard::makeMove(int source[2], int destination[2], Piece* playerPiece) {
+    // Set target piece 
+    Piece* targetPiece = board[destination[0]][destination[1]];
+    // If target not null -> attempt move and check if legal
+    if (targetPiece != NULL)
+        cerr << " taking " << printPieceColour(targetPiece) << "'s " << printPieceName(targetPiece);
+    // Step into future 
+    tryMove(source,destination,playerPiece);
+    // If pawn/ king/ rook-> no longer first move 
+    char name = playerPiece->getPieceName();
+    if ((name == 'P') || (name == 'K') || (name == 'R'))
+        playerPiece->updateFirstMove();
+    // Increment turn
+    turn++;
 }
 void ChessBoard::getKingCoord (bool playerColour, int kingCoord[2]) {
     for (int i = 0; i < X_MAX; i++) {
@@ -244,6 +243,24 @@ bool ChessBoard::isInCheck (bool playerColour) {
     } 
     return false; 
 
+}
+bool ChessBoard::moveSafeFromCheck (int source[2], destination[2]) {
+    valid = true;
+    int xSource = source[0];
+    int ySource = source[1];
+    int xDestination = destination[0];
+    int yDestination = destination[1]; 
+    Piece* playerPiece = board[xSource][ySource], temp = NULL;
+
+    if (board[xDestination][yDestination] != NULL) 
+        temp = board[xDestination][yDestination]; // Keep the piece at destination square
+    tryMove(source, destination, playerPiece);
+    if (isInCheck(playerPiece->isPieceWhite()))  // Check if move puts player in check
+        valid = false;
+    undoMove(source, destination, playerPiece);
+    if (temp != NULL) 
+        board[xDestination][yDestination] = temp; // Restore the piece at destination if move invalid
+    return valid;
 }
 
 /******************************** CHECK AND SUBMIT MOVE ************************************/

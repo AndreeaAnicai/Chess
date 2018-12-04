@@ -56,6 +56,8 @@ public:
 	   - if any of them has a valid move to king, player is in check
 	*/
 	bool isInCheck (bool playerColour);
+	// Attempts move and checks for check, if true reverts to initial move
+	bool moveSafeFromCheck (int source[2], destination[2]);
 	/* Takes user input for source and destination and makes piece move 
 	   Uses:
 	   - for input: checkInputValid, isSquareEmpty, isTurnCorrect
