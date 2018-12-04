@@ -22,7 +22,6 @@ public:
 	// Diagonal - abs(xTranslation) == abs(yTranslation) 
 	// Horizontal + vertical - abs(xTranslation) == 0 || abs(yTranslation) == 0
 	bool isMoveLegal(int xTranslation, int yTranslation) override;
-}
-
+};
 
 #endif //QUEEN_H
