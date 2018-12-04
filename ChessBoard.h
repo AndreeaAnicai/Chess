@@ -48,6 +48,14 @@ public:
 	void tryMove(int source[2], int destination[2], Piece* playerPiece);
 	// Undo's the move if move leads to check
 	void undoMove(int source[2], int destination[2], Piece* playerPiece);
+	// Get the coordinates of the player's king 
+	void getKingCoord (bool playerColour, int kingCoord[2]);
+	/* Check if move attempted puts the player whose turn it is in check
+	   - gets own king coordinates
+	   - checks all non-null pieces that are not player's own
+	   - if any of them has a valid move to king, player is in check
+	*/
+	bool isInCheck (bool playerColour);
 	/* Takes user input for source and destination and makes piece move 
 	   Uses:
 	   - for input: checkInputValid, isSquareEmpty, isTurnCorrect

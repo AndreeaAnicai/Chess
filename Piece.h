@@ -23,10 +23,8 @@ public:
     bool isPieceWhite();
     // Returns letter that represents piece name
     char getPieceName();
-    // Counter that increments whenever piece moves
-    void moveCounter();
-    // Return total number of moves for piece
-    int getMoveCounter();
+    // Set isFirstMove to false after moving
+    void updateFirstMove();
     // Resets x and y coordinates for piece
     void setXYCoord(int newX, int newY);
     /* 
@@ -47,7 +45,6 @@ protected:
     int yCoord; 
     bool isWhite;
     bool isFirstMove;
-    int counter;
     char name; 
 
 }; // Piece class

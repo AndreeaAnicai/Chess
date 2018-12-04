@@ -17,6 +17,8 @@
 #include <cstdio>
 #include <cstring>
 #include <vector>
+#include <stdio.h>
+#include <string.h>
 using namespace std;
 
 /******************************* BOARD FUNCTIONALITY *********************************/
@@ -108,8 +110,9 @@ void ChessBoard::resetBoard() {
             }
         }
     }
+    turn = 0;
 }
-turn = 0;
+
 
 /******************** FOR PRINTING THE PIECE NAME *****************/
 
@@ -127,7 +130,7 @@ const char* ChessBoard::printPieceName(Piece* piece) {
 }
 const char* ChessBoard::printPieceColour(Piece* piece) {
     const char* colour = "White";
-    if (piece->isPieceWhite)
+    if (piece->isPieceWhite())
         colour = "Black";
     return colour;
 }
@@ -178,29 +181,69 @@ bool ChessBoard::isTurnCorrect(bool isWhite) {
 void ChessBoard::makeMove(int source[2], int destination[2], Piece* playerPiece) {
     // Set target piece 
     Piece* targetPiece = board[destination[0]][destination[1]];
-
     // If target not null -> attempt move and check if legal
-    if (targetPiece != NULL) {
+    if (targetPiece != NULL)
         cerr << " taking " << printPieceColour(targetPiece) << "'s " << printPieceName(targetPiece);
-    }
     // Step into future 
-
+    tryMove(source,destination,playerPiece);
     // If pawn/ king/ rook-> no longer first move 
-    if (strcmp(playerPiece->name,'P'))
-        playerPiece->isFirstMove = false;
-    if (strcmp(playerPiece->name,'K'))
-        playerPiece->isFirstMove = false;
-    if (strcmp(playerPiece->name,'R'))
-        playerPiece->isFirstMove = false;
-
+    char name = playerPiece->getPieceName();
+    if ((name == 'P') || (name == 'K') || (name == 'R'))
+        playerPiece->updateFirstMove();
     // Increment turn
     turn++;
 }
 void ChessBoard::tryMove(int source[2], int destination[2], Piece* playerPiece) {
-
+    // Get coordinates from arrays
+    int xSource = source[0];
+    int ySource = source[1];
+    int xDestination = destination[0];
+    int yDestination = destination[1]; 
+    // Update board
+    board[xDestination][yDestination] = playerPiece;
+    board[xSource][ySource] = NULL;
+    playerPiece->setXYCoord(xDestination, yDestination);
 }
 void ChessBoard::undoMove(int source[2], int destination[2], Piece* playerPiece) {
-    
+    // Get coordinates from arrays
+    int xSource = source[0];
+    int ySource = source[1];
+    int xDestination = destination[0];
+    int yDestination = destination[1]; 
+    // Update board
+    board[xSource][ySource] = board[xDestination][yDestination];
+    board[xDestination][yDestination] = NULL;
+    playerPiece->setXYCoord(xSource, ySource);
+}
+void ChessBoard::getKingCoord (bool playerColour, int kingCoord[2]) {
+    for (int i = 0; i < X_MAX; i++) {
+        for (int j = 0; j < Y_MAX; j++) {
+            if (board[i][j] != NULL) {
+                // Check if piece is the King of same colour
+                if ((board[i][j]->getPieceName() == 'K') && (board[i][j]->isPieceWhite() == playerColour)) {
+                    kingCoord[0] = i;
+                    kingCoord[1] = j;
+                    return;
+                }
+            }
+        }
+    }
+}
+bool ChessBoard::isInCheck (bool playerColour) {
+    int kingCoord[2];
+    getKingCoord(playerColour, kingCoord);
+    for (int i = 0; i < X_MAX; i++) {
+        for (int j = 0; j < Y_MAX; j++) {
+            if (board[i][j] != NULL) { // there is a piece
+                if (board[i][j]->isPieceWhite() != playerColour) { // enemy piece
+                    if (board[i][j]->isValidMove(kingCoord, board)) // enemy pieces can move to king's location
+                        return true;
+                }
+            }
+        }
+    } 
+    return false; 
+
 }
 
 /******************************** CHECK AND SUBMIT MOVE ************************************/

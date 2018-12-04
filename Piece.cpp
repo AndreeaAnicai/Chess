@@ -8,8 +8,7 @@
 using namespace std;
 
 Piece::Piece(int xCoord, int yCoord, bool colour, char name) :
-    xCoord(xCoord), yCoord(yCoord), isWhite (colour), isFirstMove(true),
-    counter(0), name(name) {
+    xCoord(xCoord), yCoord(yCoord), isWhite (colour), isFirstMove(true), name(name) {
 }
 
 Piece::~Piece() {
@@ -22,11 +21,8 @@ bool Piece::isPieceWhite() {
 char Piece::getPieceName() {
 	return name;
 }
-void Piece::moveCounter() {
-	counter++;         
-}
-int Piece::getMoveCounter() { 
-	return counter;    
+void Piece::updateFirstMove() {
+  isFirstMove = false;
 }
 void Piece::setXYCoord(int newX, int newY) {
     xCoord = newX;
