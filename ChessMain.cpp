@@ -15,6 +15,7 @@ int main() {
     ChessBoard cb;
     cout << endl;
 
+    cb.initialiseBoard();
     cb.printBoard();
 
     /*

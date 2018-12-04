@@ -109,38 +109,98 @@ void ChessBoard::resetBoard() {
         }
     }
 }
-//turn = 0;
+turn = 0;
 
+/******************** FOR PRINTING THE PIECE NAME *****************/
+
+const char* ChessBoard::printPieceName(Piece* piece) {
+    char name = piece->getPieceName();
+    switch(name) {
+        case 'B': return "Bishop"; break;
+        case 'K': return "King"; break;
+        case 'N': return "Knight"; break;
+        case 'P': return "Pawn"; break;
+        case 'Q': return "Queen"; break;
+        case 'R': return "Rook"; break;
+        default: return "Piece name incorrect";
+    }
+}
+const char* ChessBoard::printPieceColour(Piece* piece) {
+    const char* colour = "White";
+    if (piece->isPieceWhite)
+        colour = "Black";
+    return colour;
+}
 /************************** CHECK USER INPUT AND SET COORDINATES ***************************/
 
 bool ChessBoard::checkInputValid(const char* input, int coordinates[2]) {
-    // Convert char array ( "B6") to ints
-    bool valid = true;
     char fileChar = input[0]; 
     char rankChar = input[1];
 
     if (strlen(input) != 2 || 
         fileChar < 'A' || fileChar > 'H' || 
         fileChar < 'a' || fileChar > 'h' || 
-        rankChar < '1' || rankChar > '8' || ) {
+        rankChar < '1' || rankChar > '8' ) {
         cerr << "Your inputted move, " << input << ", is invalid." << endl;
-        valid = false;
+        return false;
     }
-    else {
-        // Update array if input is valid 
-        int fileInt = fileChar - 'A';     // Setting the char 'A' to the int 0;
-        int rankInt = rankChar - '0' - 1; // Setting the char '1' to the int 0
+    else { // Update array if input is valid 
+        int fileInt = fileChar - 'A';     // Transform char to int    
+        int rankInt = rankChar - '0' - 1; // Transform char to int (-1 for 0 indexing)  
         coordinates[0] = fileInt;
         coordinates[1] = rankInt;
     }
+    return true;
 }
 
 bool ChessBoard::isSquareEmpty(Piece* currentSquare, const char* source) {
     if (currentSquare == NULL) {
-        cerr << "There is no piece at position " << from << "!" << endl;
+        cerr << "There is no piece at position " << source << "!" << endl;
         return true;
     }
     return false;
+}
+
+bool ChessBoard::isTurnCorrect(bool isWhite) {
+    if ((turn % 2 == 0 && !isWhite) || (turn % 2 == 1 && isWhite)) {
+        if (isWhite) {
+            cerr << "It is not White's turn to move!" << endl;
+            return false; 
+        }
+        else {
+            cerr << "It is not Black's turn to move!" << endl;
+            return false;  
+        }
+    }
+    return true;
+}
+
+void ChessBoard::makeMove(int source[2], int destination[2], Piece* playerPiece) {
+    // Set target piece 
+    Piece* targetPiece = board[destination[0]][destination[1]];
+
+    // If target not null -> attempt move and check if legal
+    if (targetPiece != NULL) {
+        cerr << " taking " << printPieceColour(targetPiece) << "'s " << printPieceName(targetPiece);
+    }
+    // Step into future 
+
+    // If pawn/ king/ rook-> no longer first move 
+    if (strcmp(playerPiece->name,'P'))
+        playerPiece->isFirstMove = false;
+    if (strcmp(playerPiece->name,'K'))
+        playerPiece->isFirstMove = false;
+    if (strcmp(playerPiece->name,'R'))
+        playerPiece->isFirstMove = false;
+
+    // Increment turn
+    turn++;
+}
+void ChessBoard::tryMove(int source[2], int destination[2], Piece* playerPiece) {
+
+}
+void ChessBoard::undoMove(int source[2], int destination[2], Piece* playerPiece) {
+    
 }
 
 /******************************** CHECK AND SUBMIT MOVE ************************************/

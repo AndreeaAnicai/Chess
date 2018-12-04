@@ -55,7 +55,7 @@ bool Piece::isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]) {
    	return valid; // true if none of the above checked 
 }
 
-bool isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]) {
+bool Piece::isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]) {
 
   bool valid = true;
   int xStep = 0, yStep = 0; // for checking direction
@@ -90,6 +90,7 @@ bool isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* 
     xCounter += xStep;
     yCounter += yStep;
    }
+   return valid;
 
 }
 
