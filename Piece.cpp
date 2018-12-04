@@ -9,14 +9,14 @@ using namespace std;
 
 Piece::Piece(int xCoord, int yCoord, bool colour, char name) :
     xCoord(xCoord), yCoord(yCoord), isWhite (colour), isFirstMove(true),
-    moveCount(0), name(name) {
+    counter(0), name(name) {
 }
 
 Piece::~Piece() {
 	// body intentionally empty
 }
 
-bool Piece::isWhite() {
+bool Piece::isPieceWhite() {
 	return isWhite;      
 }
 char Piece::getPieceName() {
@@ -25,7 +25,7 @@ char Piece::getPieceName() {
 void Piece::moveCounter() {
 	counter++;         
 }
-int Piece::getMoveCount() { 
+int Piece::getMoveCounter() { 
 	return counter;    
 }
 void Piece::setXYCoord(int newX, int newY) {
@@ -55,14 +55,14 @@ bool Piece::isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]) {
    	return valid; // true if none of the above checked 
 }
 
-bool Piece::isPathClear(int xTranslation, int yTranslation, Piece* board[X_MAX][Y_MAX], Piece* targetPiece) {
+bool isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]) {
 
   bool valid = true;
   int xStep = 0, yStep = 0; // for checking direction
-  int horizontalCounter = 0, verticalCounter = 0; // for keeping track of squares
+  int xCounter = 0, yCounter = 0; // for keeping track of squares
   Piece* nextSquare = NULL;
   // Check if piece at destination is own 
-  if (targetPiece != NULL && (targetPiece->isWhite() == isWhite))
+  if (targetPiece != NULL && (targetPiece->isPieceWhite() == isWhite))
     	valid = false;
   // Horizontal movement: xTranslation != 0; yTranslation == 0
   // Vertical movement: xTranslation == 0; yTranslation != 0
@@ -77,19 +77,20 @@ bool Piece::isPathClear(int xTranslation, int yTranslation, Piece* board[X_MAX][
     yStep = 1;
   else if (xTranslation < 0)
     yStep = -1;
-  horizontalCounter = xStep; 
-  verticalCounter = yStep; 
+  xCounter = xStep; 
+  yCounter = yStep; 
   // While not at destination, check if square on path is empty 
-  // If empty, update horizontalCounter by 1/-1 if horizontal movement OR
-  // Update verticalCounter by 1/-1 if vertical  movement OR
+  // If empty, update xCounter by 1/-1 if horizontal movement OR
+  // Update yCounter by 1/-1 if vertical  movement OR
   // Update both by 1/-1 if diagonal movement
-  while (xTranslation != horizontalCounter || yTranslation != verticalCounter) {
-    nextSquare = board[xCoord + horizontalCounter][yCoord + verticalCounter];
+  while (xTranslation != xCounter || yTranslation != yCounter) {
+    nextSquare = board[xCoord + xCounter][yCoord + yCounter];
     if (nextSquare != NULL)
       valid = false; 
-    horizontalCounter += xStep;
-    verticalCounter += yStep;
+    xCounter += xStep;
+    yCounter += yStep;
    }
+
 }
 
 

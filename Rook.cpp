@@ -2,6 +2,7 @@
 /* This is the implementation file of the class Rook */
 /******************************************************/
 
+#include "Rook.h"
 #include <cstdlib>
 #include <iostream>
 using namespace std;

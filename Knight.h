@@ -18,7 +18,7 @@ public:
     ~Knight();
 
     // Override virtual function here because Knight can skip over pieces
-    bool isPathClear(int xTranslation, int yTranslation, ChessPiece* targetPiece, ChessPiece *board[X_MAX][Y_MAX]) override;
+    bool isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece *board[X_MAX][Y_MAX]) override;
     
 	// Check if Knight can move to destination based on its rules
 	// Knight moves either two squares sideways and then one square up/down or 

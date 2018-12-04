@@ -11,7 +11,6 @@
 #define PIECE_H
 
 #include "Utilities.h"
-using namespace std;
 
 class Piece 
 {
@@ -20,9 +19,8 @@ public:
     Piece(int xCoord, int yCoord, bool colour, char name);
     // Default deconstructor
     virtual ~Piece();
-
     // Check colour of piece, returns 1 if white and 0 is black
-    bool isWhite();
+    bool isPieceWhite();
     // Returns letter that represents piece name
     char getPieceName();
     // Counter that increments whenever piece moves
@@ -39,10 +37,10 @@ public:
     */ 
     bool isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]);
     // Check if trajectory is blocked by any piece
-    virtual bool isPathClear(int xTranslation, int yTranslation, ChessPiece* targetPiece, ChessPiece *board[X_MAX][Y_MAX]);
+    virtual bool isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]);
     // Check if the move is allowed by each piece's rules
     // SET AS PURE VIRTUAL FUNCTION
-    virtual bool isMoveLegal(int xTranslation, int yTranslation) const = 0;
+    virtual bool isMoveLegal(int xTranslation, int yTranslation) = 0;
 
 protected:
     int xCoord; 
@@ -50,7 +48,7 @@ protected:
     bool isWhite;
     bool isFirstMove;
     int counter;
-    char name; // W or B
+    char name; 
 
 }; // Piece class
 

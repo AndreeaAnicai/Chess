@@ -1,6 +1,7 @@
 #include "ChessBoard.h"
 
 #include <iostream>
+#include "ChessBoard.h"
 
 using namespace std;
 
@@ -14,6 +15,9 @@ int main() {
     ChessBoard cb;
     cout << endl;
 
+    cb.printBoard();
+
+    /*
     cb.submitMove("D7", "D6");
     cout << endl;
 
@@ -76,6 +80,9 @@ int main() {
 
     cb.submitMove("D3", "G6");
     cout << endl;
+    */
+
+
 
     return 0;
 }

@@ -2,11 +2,12 @@
 /* This is the implementation file of the class Queen */
 /******************************************************/
 
+#include "Pawn.h"
 #include <cstdlib>
 #include <iostream>
 using namespace std;
 
-Pawn::Pawn(int xCoord, int yCoord, bool colour) : Piece(int xCoord, int yCoord, bool colour, 'P'){
+Pawn::Pawn(int xCoord, int yCoord, bool colour) : Piece(xCoord, yCoord, colour, 'P') {
 	// Body intentionally empty
 }
 
@@ -14,15 +15,15 @@ Pawn::~Pawn() {
 	// Body intentionally empty
 }
 
-bool Pawn::isPathClear(int xTranslation, int yTranslation, ChessPiece* targetPiece, ChessPiece *board[X_MAX][Y_MAX]) {
+bool Pawn::isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece *board[X_MAX][Y_MAX]) {
   
 	// SAME AS PIECE 
   	bool valid = true;
   	int xStep = 0, yStep = 0; // for checking direction
-  	int horizontalCounter = 0, verticalCounter = 0; // for keeping track of squares
+  	int xCounter = 0, yCounter = 0; // for keeping track of squares
   	Piece* nextSquare = NULL;
 
-  	if (targetPiece != NULL && (targetPiece->isWhite() == isWhite)) { // Same colour piece at dest
+  	if (targetPiece != NULL && (targetPiece->isPieceWhite() == isWhite)) { // Same colour piece at dest
     	valid = false;
     }
   	// JUST FOR PAWN
@@ -38,15 +39,15 @@ bool Pawn::isPathClear(int xTranslation, int yTranslation, ChessPiece* targetPie
     		yStep = 1;
  	 	else if (xTranslation < 0)
     		yStep = -1;
-  		horizontalCounter = xStep; 
-  		verticalCounter = yStep; 
+  		xCounter = xStep; 
+  		yCounter = yStep; 
 
-  		while (xTranslation != horizontalCounter || yTranslation != verticalCounter) {
-    		nextSquare = board[xCoord + horizontalCounter][yCoord + verticalCounter];
+  		while (xTranslation != xCounter || yTranslation != yCounter) {
+    		nextSquare = board[xCoord + xCounter][yCoord + yCounter];
     		if (nextSquare != NULL)
       		valid = false; 
-    		horizontalCounter += xStep;
-    		verticalCounter += yStep;
+    		xCounter += xStep;
+    		yCounter += yStep;
    		}
   	}
 }

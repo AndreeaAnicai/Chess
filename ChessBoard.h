@@ -5,54 +5,43 @@
 /*****************************************************/
 
 #ifndef CHESSBOARD_H
-#define CHESSBOARD_H>
+#define CHESSBOARD_H
 
-#include <ostream>
-#include <string>
 #include "Piece.h"
-using namespace std:
+#include "Utilities.h"
 
 class ChessBoard 
 {
 public:
+	/* BOARD FUNCTIONALITY */
 
-	// Creates 8x8 board 
+	// Creates 8x8 board initialised to nullptr 
 	ChessBoard();
-
-	// Destructor - returns all dynamic memory used on the heap 
+	// Destructor returns all dynamic memory used on the heap 
 	~ChessBoard();
+	// Sets up all the pieces on the board 
+	void initialiseBoard();
+	// Prints all the pieces on the board
+	void printBoard();
+	// Deletes and replaces all existing pieces with nullptr
+	void resetBoard();
 
-	// Get the current board 
-	static ChessBoard* getBoard();
+	/* CHECK USER INPUT AND SET COORDINATES */
 
-	// Function that checks if vertical trajectory is clear; returns 1 if true
-	bool checkVertical( fromSquare,  toSquare) const;
+	// Checks if user input is valid and if it is, sets the coordinates in an int array
+	bool checkInputValid(const char* input, int coordinates[2]);
+	// Check if square has null pointer or piece 
+	bool isSquareEmpty(Piece*, const char*);
 
-	// Function that checks if horizontal trajectory is clear; returns 1 if true
-	bool checkHorizontal( fromSquare,  toSquare) const;
+	/* CHECK AND SUBMIT MOVE */
 
-	// Function that checks if diagonal trajectory is clear; 
-	bool checkDiagonal( fromSquare,  toSquare) const;
+	// Takes user input for source and destination and makes piece move 
+	void submitMove(const char* source, const char* destination);
 
-	// Check if sqaure if occupied by piece or nullptr
-	// Returns 1/true if not null, 0/false otherwise
-	bool isSquareOccupied() const;
-
-	// Set the x and y coordinates for Piece to supplied numbers
-	void setPieceCoord (Piece& piece, int x, int y);
-
-	// Move piece once move is validated, and update coordinates on board
-	void submitMove ( fromSquare, toSquare) const;
-
-	// Display interface of board with all pieces
-	void printBoard(ostream& outStream) const;
 
 private:
-	static ChessBoard* thisChessBoard;
-	static const int MAX_DIMENSION = 8;
-	Piece* board[MAX_DIMENSION][MAX_DIMENSION];
-	
-
-}; //ChessBoard class
+	Piece* board[X_MAX][Y_MAX];
+	int turn;
+};
 
 #endif //CHESSBOARD_H

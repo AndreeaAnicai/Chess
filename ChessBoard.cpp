@@ -5,116 +5,147 @@
 
 #include "ChessBoard.h"
 #include "Piece.h"
+#include "Bishop.h"
+#include "King.h"
+#include "Knight.h"
+#include "Pawn.h"
+#include "Queen.h"
+#include "Rook.h"
 
-ChessBoard::ChessBoard()
-{
-	// FOR A 8 X 8 BOARD 
+#include <iostream>
+#include <sstream>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+using namespace std;
 
-	// Initialise middle rows with null pointers / empty pieces
-	// A-H/2-5 for a 8x8 board
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 2; j < 6; j++)
-        {
+/******************************* BOARD FUNCTIONALITY *********************************/
+
+// Initialise vectors to store captured pieces 
+vector<Piece*> whitePieces;
+vector<Piece*> blackPieces;
+
+ChessBoard::ChessBoard() : turn(0) {
+    for (int i = 0; i < X_MAX; i++) {
+        for (int j = 0; j < Y_MAX; j++) {
             board[i][j] = NULL;
         }
     }
-    // Initialise rows A-H/1 and A-H/6 to pawns 
-    for (int i = 0; i < 8; i++)
-    {
-    	board[i][1] = new Pawn(true, i, 1);
-    	board[i][6] = new Pawn(false, i, 6);
+}
+
+ChessBoard::~ChessBoard() {
+
+    resetBoard(); 
+    for (int i = 0; i < X_MAX; i++) {
+        for (int j = 0; j < Y_MAX; j++) {
+            delete board[i][j];
+        }
+        //delete[] board[i];
     }
-    // Initialise rooks
-    board[0][0] = new Rook(true, 0, 0);
-    board[7][0] = new Rook(true, 7, 0);
-    board[0][7] = new Rook(false, 0, 7);
-    board[7][7] = new Rook(false, 7, 7);
-    // Initialise Knights 
-    board[1][0] = new Knight(true, 1, 0);
-    board[6][0] = new Knight(true, 6, 0);
-    board[1][7] = new Knight(false, 1, 7);
-    board[6][7] = new Knight(false, 6, 7);
-    // Initialise Bishops 
-    board[2][0] = new Bishop(true, 2, 0);
-    board[5][0] = new Bishop(true, 5, 0);
-    board[2][7] = new Bishop(false, 2, 7);
-    board[5][7] = new Bishop(false, 5, 7);
+    //delete[] board;
+}
+
+void ChessBoard::initialiseBoard() {
+
+    // Initialise Pawns on rows 1 and 6
+    for (int i = 0; i < X_MAX; i++) {
+        board[i][1] = new Pawn(i,1,true); // White pawns
+        board[i][6] = new Pawn(i,6,false); // Black pawns
+    }
+    // Initialise Rooks
+    board[0][0] = new Rook(0,0,true); // 2 x white
+    board[7][0] = new Rook(7,0,true);
+    board[0][7] = new Rook(0,7,false); // 2 x black
+    board[7][7] = new Rook(7,7,false); 
+    // Initialise Knights
+    board[1][0] = new Knight(1,0,true); // 2 x white
+    board[6][0] = new Knight(6,0,true);
+    board[1][7] = new Knight(1,7,false); // 2 x black
+    board[6][7] = new Knight(6,7,false); 
+    // Initialise Bishops
+    board[2][0] = new Bishop(2,0,true); // 2 x white
+    board[5][0] = new Bishop(5,0,true);
+    board[2][7] = new Bishop(2,7,false); // 2 x black
+    board[5][7] = new Bishop(5,7,false); 
     // Initialise Queens
-    board[3][0] = new Queen(true, 3, 0);
-    board[3][7] = new Queen(false, 3, 7);
+    board[3][0] = new Queen(3,0,true); // White queen
+    board[3][7] = new Queen(3,7,false); // Black queen
     // Initialise Kings
-    board[4][0] = new King(true, 4, 0);
-    board[4][7] = new King(false, 4, 7);
+    board[4][0] = new King(4,0,true); // White king
+    board[4][7] = new King(4,7,false); // Black kings
 }
 
-ChessBoard::~ChessBoard()
-{
-    for (int i = 0; i < MAX_DIMENSION; i++)
-    {
-        for (int j = 0; j < MAX_DIMENSION; j++)
-        {
-            delete[] board[i][j];
-        }
-        delete[] board[i];
-    }
-    delete[] board;
-}
-
-ChessBoard* ChessBoard::getBoard() {
-    if (!thisChessBoard) 
-        thisChessBoard = new ChessBoard();
-    else 
-        return thisChessBoard;
-}
-
-bool ChessBoard::isSquareOccupied() const {
-
-    if board[x][y] == NULL
-        return 1;
-    return 0;
-}
-
-void ChessBoard::setPieceCoord (Piece& piece, int x, int y) {
-    piece.xCoord = x;
-    piece.yCoord = y;
-}
-
-bool ChessBoard::checkVertical( fromSquare,  toSquare) const {
-
-}
+void ChessBoard::printBoard() {
     
-bool ChessBoard::checkHorizontal( fromSquare,  toSquare) const {
-
-}
-
-bool ChessBoard::checkDiagonal( fromSquare, toSquare) const {
-
-}
-    
-void ChessBoard::submitMove (Player& player, fromSquare, toSquare) const {
-
-}
-
-void ChessBoard::printBoard(ostream& outStream) const
-{
-    outStream << endl << "   A  B  B  B  E  F  G  H" << endl;
-    outStream << " -------------------------" << endl;
-    for (int y = MAX_DIMENSION - 1; y >= 0; y--) 
+    cout << endl << "   A  B  C  D  E  F  G  H" << endl;
+    cout << " -------------------------" << endl;
+    for (int y = Y_MAX - 1; y >= 0; y--) // black at top, white at bottom
     {
-        outStream << y + 1;
-        for (int x = 0; x < MAX_DIMENSION; x++)
+        cout << y + 1;
+        for (int x = 0; x < X_MAX; x++)
         {
-            outStream << "|";
-            if(board[x][y]->isSquareOccupied())
-                board[x][y]->printPiece();
-            else
-                outStream << "  ";
+            cout << "|";
+            if(board[x][y] != NULL) {
+                if (board[x][y]->isPieceWhite()) 
+                    cout << "W" << board[x][y]->getPieceName();
+                else 
+                    cout << "B" << board[x][y]->getPieceName();
+            }
+            else 
+                cout << "  ";
         }
-        outStream << "|" << y + 1 << endl << " -------------------------" << endl;
+        cout << "|" << y + 1 << endl << " -------------------------" << endl;
     }
-    outStream << "   A  B  C  D  E  F  G  H" << endl << endl;
+    cout << "   A  B  C  D  E  F  G  H" << endl << endl;
 }
 
-ChessBoard* ChessBoard::thisChessBoard = NULL;
+void ChessBoard::resetBoard() {
+    for (int i = 0; i < X_MAX; i++) {
+        for (int j = (Y_MAX - 1); j >= 0; j--) {
+            if (board[i][j] != NULL) {
+                delete board[i][j];   
+                board[i][j] = NULL;   
+            }
+        }
+    }
+}
+//turn = 0;
+
+/************************** CHECK USER INPUT AND SET COORDINATES ***************************/
+
+bool ChessBoard::checkInputValid(const char* input, int coordinates[2]) {
+    // Convert char array ( "B6") to ints
+    bool valid = true;
+    char fileChar = input[0]; 
+    char rankChar = input[1];
+
+    if (strlen(input) != 2 || 
+        fileChar < 'A' || fileChar > 'H' || 
+        fileChar < 'a' || fileChar > 'h' || 
+        rankChar < '1' || rankChar > '8' || ) {
+        cerr << "Your inputted move, " << input << ", is invalid." << endl;
+        valid = false;
+    }
+    else {
+        // Update array if input is valid 
+        int fileInt = fileChar - 'A';     // Setting the char 'A' to the int 0;
+        int rankInt = rankChar - '0' - 1; // Setting the char '1' to the int 0
+        coordinates[0] = fileInt;
+        coordinates[1] = rankInt;
+    }
+}
+
+bool ChessBoard::isSquareEmpty(Piece* currentSquare, const char* source) {
+    if (currentSquare == NULL) {
+        cerr << "There is no piece at position " << from << "!" << endl;
+        return true;
+    }
+    return false;
+}
+
+/******************************** CHECK AND SUBMIT MOVE ************************************/
+
+void ChessBoard::submitMove(const char* source, const char* destination) {
+
+}
 

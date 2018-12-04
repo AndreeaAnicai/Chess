@@ -2,11 +2,12 @@
 /* This is the implementation file of the class Queen */
 /******************************************************/
 
+#include "Queen.h"
 #include <cstdlib>
 #include <iostream>
 using namespace std;
 
-Queen::Queen(int xCoord, int yCoord, bool colour) : Piece(int xCoord, int yCoord, bool colour, 'Q') {
+Queen::Queen(int xCoord, int yCoord, bool colour) : Piece(xCoord, yCoord, colour, 'Q') {
 	// Body intentionally empty
 }
 
