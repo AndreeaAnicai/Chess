@@ -138,7 +138,6 @@ bool ChessBoard::checkInputValid(const char* input, int coordinates[2]) {
 }
 
 bool ChessBoard::isTurnCorrect(bool isWhite) {
-    cout << "turn is: " << turn << endl;
     if ((turn % 2 == 0 && !isWhite) || (turn % 2 == 1 && isWhite)) {
         if (isWhite) {
             cerr << "It is not White's turn to move!" << endl;
@@ -254,7 +253,7 @@ bool ChessBoard::moveLeadsToCheckmate (bool playerColour) {
                             // If there is a valid move to that destination AND
                             // the move doesn't result in check then 
                             if ((board[i][j]->isValidMove(destination, board)) && (moveSafeFromCheck(source, destination))) {
-                                return true;
+                                return false;
                             }
                         }
                     }
@@ -262,7 +261,7 @@ bool ChessBoard::moveLeadsToCheckmate (bool playerColour) {
             }
         }
     }                            
-    return false;
+    return true;
 }
 
 /******************************** CHECK AND SUBMIT MOVE ************************************/
@@ -287,12 +286,10 @@ void ChessBoard::submitMove(const char* sourceInput, const char* destinationInpu
     else {
         const char* playerPieceColour = playerPiece->getPieceColour(); 
         const char* playerPieceName = playerPiece->getPieceName();
-    
         // Check turn 
         bool playerColour = playerPiece->isPieceWhite();
         if (!isTurnCorrect(playerColour)) 
             return;
-
         // Check moving that piece is valid
         //if (!playerPiece->isValidMove(destination, board) || !moveSafeFromCheck(source, destination)) {
         if (!playerPiece->isValidMove(destination, board)) {
@@ -307,18 +304,16 @@ void ChessBoard::submitMove(const char* sourceInput, const char* destinationInpu
         }
         cerr << playerPieceColour << "'s " << playerPieceName;
         cerr << " moves from " << sourceInput << " to " << destinationInput;
-
         // Make move
         makeMove(source, destination, playerPiece);
-
         // Check for checkmate or stalemate  
         const char* enemyPieceColour = "White";
         bool enemyColour = !playerColour;
         bool enemyInCheck = isInCheck(enemyColour);
-        bool enemyHasLegalMove = moveLeadsToCheckmate(enemyColour);
+        bool enemyHasLegalMove = !moveLeadsToCheckmate(enemyColour);
         if (!enemyColour)
             enemyPieceColour = "Black";
-
+        cerr << endl;
         if (!enemyHasLegalMove) { 
             if (enemyInCheck)
                 cerr << enemyPieceColour << " is in checkmate" << endl;
