@@ -29,6 +29,8 @@ public:
     const char* getPieceColour();
     // Set isFirstMove to false after moving
     void updateFirstMove();
+    // Returns the value of isFirstMove
+    bool returnIsFirstMove();
     // Resets x and y coordinates for piece
     void setXYCoord(int newX, int newY);
     /* Function that checks if move is valid taking into account

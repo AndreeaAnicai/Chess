@@ -39,13 +39,12 @@ ChessBoard::ChessBoard() : turn(0) {
 
 ChessBoard::~ChessBoard() {
 
+    resetBoard();
     for (int i = 0; i < X_MAX; i++) {
         for (int j = 0; j < Y_MAX; j++) {
             delete board[i][j];
         }
-       // delete[] board[i];
     }
-   // delete[] board;
 }
 
 void ChessBoard::initialiseBoard() {
@@ -178,7 +177,12 @@ void ChessBoard::makeMove(int source[2], int destination[2], Piece* playerPiece)
     // If target not null -> attempt move and check if legal
     if (targetPiece != NULL)
         cerr << " taking " << targetPiece->getPieceColour() << "'s " << targetPiece->getPieceName();
-    // Step into future 
+    // Step into the future and check if move is safe from check
+    // if the move is valid, delete the piece that you're capturing
+    if (moveSafeFromCheck(source,destination)) {
+        delete targetPiece;
+    } 
+    // Make move
     tryMove(source,destination,playerPiece);
     // If pawn/ king/ rook-> no longer first move 
     char name = playerPiece->getPieceInitial();
@@ -263,6 +267,38 @@ bool ChessBoard::moveLeadsToCheckmate (bool playerColour) {
     }                            
     return true;
 }
+
+ /************************************** FOR CASTLING ***************************************/
+
+bool ChessBoard::castling (int destination[2], bool playerColour) {
+    
+   // 1. king 1st move //
+   // 2. rook 1st move
+   // 3. no pieces in between 
+   // 4. king not in check
+   // 5. king does not move through check 
+   // 6. the king will not be in check after castling 
+   // 7. pieces are not capturing 
+   // 8. king is moving 2 squares / rook 
+   // 9. rook on the right: new pos xKing, yKing+1
+   // 10. rook on the left: new pos xKIng, yKing-1
+ 
+    int xDestination = destination[0];
+    int yDestination = destination[1]; 
+    int kingCoord[2];
+    getKingCoord(playerColour, kingCoord);
+    int xKing = kingCoord[0];
+    int yKing = kingCoord[1]; 
+    if (board[kingCoord[0]][kingCoord[1] != NULL) 
+        Piece* king = board[kingCoord[0]][kingCoord[1];
+
+    if (!( abs(xDestination - xKing == 0) && abs(yDestination - yKing == 2) && king->returnIsFirstMove ))
+        return false;
+    else {
+        if ()
+    }
+
+} 
 
 /******************************** CHECK AND SUBMIT MOVE ************************************/
 

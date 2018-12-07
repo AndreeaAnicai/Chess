@@ -33,6 +33,9 @@ public:
 	// Check if it's the current player's turn
 	bool isTurnCorrect(bool isWhite);
 
+    /************************** FOR CASTLING **************************/
+	bool castling (int destination[2], bool playerColour); 
+	
 	/********************* CHECK AND SUBMIT MOVE **********************/
 
 	// Makes the move after checking for attacking piece, uses tryMove

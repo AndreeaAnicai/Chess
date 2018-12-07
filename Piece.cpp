@@ -41,6 +41,9 @@ const char* Piece::getPieceColour() {
 void Piece::updateFirstMove() {
   isFirstMove = false;
 }
+bool Piece::returnIsFirstMove() {
+  return isFirstMove;
+}
 void Piece::setXYCoord(int newX, int newY) {
     xCoord = newX;
     yCoord = newY;
@@ -54,16 +57,16 @@ bool Piece::isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]) {
     Piece* targetPiece = board[destX][destY];
     // Check if destination is within board boundaries
     if (destX < 0 || destX >= X_MAX)
-    	return false;
+      return false;
     if (destY < 0 || destY >= Y_MAX)
-    	return false;
+      return false;
     // Check if the trajectory is blocked 
     if (!isDirectionClear(xTranslation, yTranslation, targetPiece, board))
-    	return false;
+      return false;
     // Check if the move is legal for each piece
     if (!isMoveLegal(xTranslation, yTranslation))             
-    	return false;
-   	return true; // true if none of the above checked 
+      return false;
+  return true; 
 }
 bool Piece::isDirectionClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]) {
 
