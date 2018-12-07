@@ -8,7 +8,7 @@
 using namespace std;
 
 Piece::Piece(int xCoord, int yCoord, bool colour, char name) :
-    xCoord(xCoord), yCoord(yCoord), isWhite (colour), isFirstMove(true), name(name) {
+    xCoord(xCoord), yCoord(yCoord), isWhite(colour), name(name), isFirstMove(true) {
 }
 
 Piece::~Piece() {
@@ -18,8 +18,25 @@ Piece::~Piece() {
 bool Piece::isPieceWhite() {
 	return isWhite;      
 }
-char Piece::getPieceName() {
+char Piece::getPieceInitial() {
 	return name;
+}
+const char* Piece::getPieceName() {
+  switch(name) {
+    case 'B': return "Bishop"; break;
+    case 'K': return "King"; break;
+    case 'N': return "Knight"; break;
+    case 'P': return "Pawn"; break;
+    case 'Q': return "Queen"; break;
+    case 'R': return "Rook"; break;
+    default: return "Piece name incorrect";
+    }
+}
+const char* Piece::getPieceColour() {
+  if (isWhite)
+    return "White";
+  else 
+    return "Black";
 }
 void Piece::updateFirstMove() {
   isFirstMove = false;
@@ -28,10 +45,8 @@ void Piece::setXYCoord(int newX, int newY) {
     xCoord = newX;
     yCoord = newY;
 }
-
 bool Piece::isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]) {
     
-    bool valid = true;
     int destX = destination[0];
     int destY = destination[1];
     int xTranslation = destX - xCoord;
@@ -39,27 +54,25 @@ bool Piece::isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]) {
     Piece* targetPiece = board[destX][destY];
     // Check if destination is within board boundaries
     if (destX < 0 || destX >= X_MAX)
-    	valid = false;
+    	return false;
     if (destY < 0 || destY >= Y_MAX)
-    	valid = false;
+    	return false;
     // Check if the trajectory is blocked 
-    if (!isPathClear(xTranslation, yTranslation, targetPiece, board))
-    	valid = false;
+    if (!isDirectionClear(xTranslation, yTranslation, targetPiece, board))
+    	return false;
     // Check if the move is legal for each piece
     if (!isMoveLegal(xTranslation, yTranslation))             
-    	valid = false;
-   	return valid; // true if none of the above checked 
+    	return false;
+   	return true; // true if none of the above checked 
 }
+bool Piece::isDirectionClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]) {
 
-bool Piece::isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]) {
-
-  bool valid = true;
   int xStep = 0, yStep = 0; // for checking direction
   int xCounter = 0, yCounter = 0; // for keeping track of squares
   Piece* nextSquare = NULL;
   // Check if piece at destination is own 
   if (targetPiece != NULL && (targetPiece->isPieceWhite() == isWhite))
-    	valid = false;
+    	return false;
   // Horizontal movement: xTranslation != 0; yTranslation == 0
   // Vertical movement: xTranslation == 0; yTranslation != 0
   // Diagonal movement: xTranslation != 0; yTranslation != 0
@@ -69,10 +82,12 @@ bool Piece::isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, 
     xStep = 1;
   else if (xTranslation < 0)
     xStep = -1;
+  else;
   if (yTranslation > 0) 
     yStep = 1;
-  else if (xTranslation < 0)
+  else if (yTranslation < 0)
     yStep = -1;
+  else;
   xCounter = xStep; 
   yCounter = yStep; 
   // While not at destination, check if square on path is empty 
@@ -82,12 +97,11 @@ bool Piece::isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, 
   while (xTranslation != xCounter || yTranslation != yCounter) {
     nextSquare = board[xCoord + xCounter][yCoord + yCounter];
     if (nextSquare != NULL)
-      valid = false; 
+      return false; 
     xCounter += xStep;
     yCounter += yStep;
    }
-   return valid;
-
+   return true;
 }
 
 

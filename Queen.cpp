@@ -16,15 +16,11 @@ Queen::~Queen() {
 }
 
 bool Queen::isMoveLegal(int xTranslation, int yTranslation) {
-	bool valid = true;
-	if (xTranslation == 0 || yTranslation == 0) { // Horizontal or vertical
-		valid = false;
-	}
-	if (abs(xTranslation) != abs(yTranslation)) { // Diagonal
-		valid = false;
+	if (xTranslation != 0 && yTranslation != 0 && (abs(xTranslation) != abs(yTranslation))) { // Diagonal
+		return false;
 	}
 	if (xTranslation == 0 && yTranslation == 0) { // Piece not moving
-		valid = false;
+		return false;
 	}
-	return valid;
+	return true;
 }

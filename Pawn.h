@@ -18,7 +18,7 @@ public:
 	~Pawn();
 
 	// Override virtual function here because Pawn can move two ways
-    bool isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece *board[X_MAX][Y_MAX]) override;
+    bool isDirectionClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece *board[X_MAX][Y_MAX]) override;
 
 	// Check if Pawn can move to destination based on its rules
 	// Advance 1/2 squares when not capturing

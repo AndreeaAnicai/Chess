@@ -15,28 +15,26 @@ Knight::~Knight() {
     // Body intentionally empty
 }
 
-bool Knight::isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece *board[X_MAX][Y_MAX]) {
-    bool valid = true;
+bool Knight::isDirectionClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece *board[X_MAX][Y_MAX]) {
     // Skips the checking of pieces on the way
     if (targetPiece != NULL && (targetPiece->isPieceWhite() == isWhite)) {
-        valid = false; 
+        return false; 
     }
-    return valid;
+    return true;
 }
     
 bool Knight::isMoveLegal(int xTranslation, int yTranslation) {
-    bool valid = true;
     if (abs(xTranslation) != 1 && abs(xTranslation) != 2) {
-        valid = false;
+        return false;
     }
     if (abs(yTranslation) != 1 && abs(yTranslation) != 2) { 
-        valid = false;
+        return false;
     }
     if (abs(xTranslation) == abs(yTranslation)) { //Diagonal not L shaped
-        valid = false;
+        return false;
     }
     if (xTranslation == 0 && yTranslation == 0) { //Piece not moving
-        valid = false;
+        return false;
     }
-    return valid;
+    return true;
 }

@@ -15,12 +15,11 @@ King::~King() {
 }
 
 bool King::isMoveLegal(int xTranslation, int yTranslation) {
-	bool valid = true;
     if (abs(xTranslation) > 1)
-    	valid = false; // Only 1 step allowed horizontally
+    	return false; // Only 1 step allowed horizontally
     if (abs(yTranslation) > 1)
-		valid = false; // Only 1 step allowed vertically
+		return false; // Only 1 step allowed vertically
     if (xTranslation == 0 && yTranslation == 0)
-    	valid = false; // If the position does not change at all
-    return valid;
+    	return false; // If the position does not change at all
+    return true;
 }

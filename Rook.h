@@ -21,7 +21,6 @@ public:
 	// Rook moves only horizontally or vertically
 	// abs(xTranslation) == 0 || abs(yTranslation) == 0
 	bool isMoveLegal(int xTranslation, int yTranslation) override;
-
 }; 
 
 #endif // ROOK_H

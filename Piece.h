@@ -22,20 +22,23 @@ public:
     // Check colour of piece, returns 1 if white and 0 is black
     bool isPieceWhite();
     // Returns letter that represents piece name
-    char getPieceName();
+    char getPieceInitial();
+    // Return a char array with the piece name
+    const char* getPieceName();
+    // Return a char array with the piece colour 
+    const char* getPieceColour();
     // Set isFirstMove to false after moving
     void updateFirstMove();
     // Resets x and y coordinates for piece
     void setXYCoord(int newX, int newY);
-    /* 
-    	Function that checks if move is valid taking into account
+    /* Function that checks if move is valid taking into account
     	- board spatial limits 
 		- individual piece allowed movement - isMoveLegal()
-		- whether there are blocking pieces - isPathClear()
+		- whether there are blocking pieces - isDirectionClear()
     */ 
     bool isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]);
     // Check if trajectory is blocked by any piece
-    virtual bool isPathClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]);
+    virtual bool isDirectionClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]);
     // Check if the move is allowed by each piece's rules
     // SET AS PURE VIRTUAL FUNCTION
     virtual bool isMoveLegal(int xTranslation, int yTranslation) = 0;
@@ -44,8 +47,8 @@ protected:
     int xCoord; 
     int yCoord; 
     bool isWhite;
-    bool isFirstMove;
     char name; 
+    bool isFirstMove;
 
 }; // Piece class
 

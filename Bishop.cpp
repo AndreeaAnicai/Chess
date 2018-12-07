@@ -4,6 +4,8 @@
 
 #include "Bishop.h"
 #include <cstdlib>
+#include <iostream>
+using namespace std;
 
 Bishop::Bishop(int xCoord, int yCoord, bool colour) : Piece(xCoord, yCoord, colour, 'B') {
 	// Body intentionally empty
@@ -13,13 +15,13 @@ Bishop::~Bishop() {
 	// Body intentionally empty
 }
 bool Bishop::isMoveLegal(int xTranslation, int yTranslation) {
-	bool valid = true;
+	
 	if (xTranslation == 0 || yTranslation == 0) { //Not diagonal movement
-		valid = false;
+		return false;
 	}
 	if (abs(xTranslation) != abs(yTranslation)) {
-		valid = false;
+		return false;
 	}
-	return valid;
+	return true;
 }
 

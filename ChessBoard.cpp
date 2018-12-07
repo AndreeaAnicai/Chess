@@ -33,18 +33,19 @@ ChessBoard::ChessBoard() : turn(0) {
             board[i][j] = NULL;
         }
     }
+    initialiseBoard();
+    cerr << "A new chess game is started!" << endl;
 }
 
 ChessBoard::~ChessBoard() {
 
-    resetBoard(); 
     for (int i = 0; i < X_MAX; i++) {
         for (int j = 0; j < Y_MAX; j++) {
             delete board[i][j];
         }
-        //delete[] board[i];
+       // delete[] board[i];
     }
-    //delete[] board;
+   // delete[] board;
 }
 
 void ChessBoard::initialiseBoard() {
@@ -89,9 +90,9 @@ void ChessBoard::printBoard() {
             cout << "|";
             if(board[x][y] != NULL) {
                 if (board[x][y]->isPieceWhite()) 
-                    cout << "W" << board[x][y]->getPieceName();
+                    cout << "W" << board[x][y]->getPieceInitial();
                 else 
-                    cout << "B" << board[x][y]->getPieceName();
+                    cout << "B" << board[x][y]->getPieceInitial();
             }
             else 
                 cout << "  ";
@@ -110,30 +111,10 @@ void ChessBoard::resetBoard() {
             }
         }
     }
+    initialiseBoard();
     turn = 0;
 }
 
-
-/******************** FOR PRINTING THE PIECE NAME *****************/
-
-const char* ChessBoard::printPieceName(Piece* piece) {
-    char name = piece->getPieceName();
-    switch(name) {
-        case 'B': return "Bishop"; break;
-        case 'K': return "King"; break;
-        case 'N': return "Knight"; break;
-        case 'P': return "Pawn"; break;
-        case 'Q': return "Queen"; break;
-        case 'R': return "Rook"; break;
-        default: return "Piece name incorrect";
-    }
-}
-const char* ChessBoard::printPieceColour(Piece* piece) {
-    const char* colour = "White";
-    if (piece->isPieceWhite())
-        colour = "Black";
-    return colour;
-}
 /************************** CHECK USER INPUT AND SET COORDINATES ***************************/
 
 bool ChessBoard::checkInputValid(const char* input, int coordinates[2]) {
@@ -142,7 +123,7 @@ bool ChessBoard::checkInputValid(const char* input, int coordinates[2]) {
 
     if (strlen(input) != 2 || 
         fileChar < 'A' || fileChar > 'H' || 
-        fileChar < 'a' || fileChar > 'h' || 
+        //fileChar < 'a' || fileChar > 'h' || 
         rankChar < '1' || rankChar > '8' ) {
         cerr << "Your inputted move, " << input << ", is invalid." << endl;
         return false;
@@ -156,15 +137,8 @@ bool ChessBoard::checkInputValid(const char* input, int coordinates[2]) {
     return true;
 }
 
-bool ChessBoard::isSquareEmpty(Piece* currentSquare, const char* source) {
-    if (currentSquare == NULL) {
-        cerr << "There is no piece at position " << source << "!" << endl;
-        return true;
-    }
-    return false;
-}
-
 bool ChessBoard::isTurnCorrect(bool isWhite) {
+    cout << "turn is: " << turn << endl;
     if ((turn % 2 == 0 && !isWhite) || (turn % 2 == 1 && isWhite)) {
         if (isWhite) {
             cerr << "It is not White's turn to move!" << endl;
@@ -204,11 +178,11 @@ void ChessBoard::makeMove(int source[2], int destination[2], Piece* playerPiece)
     Piece* targetPiece = board[destination[0]][destination[1]];
     // If target not null -> attempt move and check if legal
     if (targetPiece != NULL)
-        cerr << " taking " << printPieceColour(targetPiece) << "'s " << printPieceName(targetPiece);
+        cerr << " taking " << targetPiece->getPieceColour() << "'s " << targetPiece->getPieceName();
     // Step into future 
     tryMove(source,destination,playerPiece);
     // If pawn/ king/ rook-> no longer first move 
-    char name = playerPiece->getPieceName();
+    char name = playerPiece->getPieceInitial();
     if ((name == 'P') || (name == 'K') || (name == 'R'))
         playerPiece->updateFirstMove();
     // Increment turn
@@ -219,7 +193,7 @@ void ChessBoard::getKingCoord (bool playerColour, int kingCoord[2]) {
         for (int j = 0; j < Y_MAX; j++) {
             if (board[i][j] != NULL) {
                 // Check if piece is the King of same colour
-                if ((board[i][j]->getPieceName() == 'K') && (board[i][j]->isPieceWhite() == playerColour)) {
+                if ((board[i][j]->getPieceInitial() == 'K') && (board[i][j]->isPieceWhite() == playerColour)) {
                     kingCoord[0] = i;
                     kingCoord[1] = j;
                     return;
@@ -244,14 +218,17 @@ bool ChessBoard::isInCheck (bool playerColour) {
     return false; 
 
 }
-bool ChessBoard::moveSafeFromCheck (int source[2], destination[2]) {
-    valid = true;
+bool ChessBoard::moveSafeFromCheck (int source[2], int destination[2]) {
+    bool valid = true;
     int xSource = source[0];
     int ySource = source[1];
     int xDestination = destination[0];
     int yDestination = destination[1]; 
-    Piece* playerPiece = board[xSource][ySource], temp = NULL;
+    Piece* playerPiece = NULL;
+    Piece* temp = NULL;
 
+    if (board[xSource][ySource] != NULL)
+        playerPiece = board[xSource][ySource];
     if (board[xDestination][yDestination] != NULL) 
         temp = board[xDestination][yDestination]; // Keep the piece at destination square
     tryMove(source, destination, playerPiece);
@@ -262,10 +239,98 @@ bool ChessBoard::moveSafeFromCheck (int source[2], destination[2]) {
         board[xDestination][yDestination] = temp; // Restore the piece at destination if move invalid
     return valid;
 }
+bool ChessBoard::moveLeadsToCheckmate (bool playerColour) {
+    // Iterate through all non-null pieces 
+    for (int i = 0; i < X_MAX; i++) { 
+        for (int j = 0; j < Y_MAX; j++) {
+
+            if (board[i][j] != NULL) { 
+                int source[] = {i, j}; // Get source coordinates
+                if (board[i][j]->isPieceWhite() == playerColour) { // Consider only own pieces
+                    // Iterate through all possible destinations on board
+                    for (int x = 0; x < X_MAX; x++) {  
+                        for (int y = 0; y < Y_MAX; y++) {
+                            int destination[] = {x, y}; // Get destination coordinates 
+                            // If there is a valid move to that destination AND
+                            // the move doesn't result in check then 
+                            if ((board[i][j]->isValidMove(destination, board)) && (moveSafeFromCheck(source, destination))) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }                            
+    return false;
+}
 
 /******************************** CHECK AND SUBMIT MOVE ************************************/
 
-void ChessBoard::submitMove(const char* source, const char* destination) {
+void ChessBoard::submitMove(const char* sourceInput, const char* destinationInput) {
 
+    // Read input and put into arrays
+    int source[2], destination[2];
+    if (!checkInputValid(sourceInput, source)) 
+        return;
+    if (!checkInputValid(destinationInput, destination)) 
+        return;
+
+    // Initialise our piece to correct starting position
+    Piece* playerPiece = board[source[0]][source[1]];
+
+    // Check for empty piece
+    if (playerPiece == NULL) {
+        cerr << "There is no piece at position " << sourceInput << "!" << endl;
+        return;
+    }
+    else {
+        const char* playerPieceColour = playerPiece->getPieceColour(); 
+        const char* playerPieceName = playerPiece->getPieceName();
+    
+        // Check turn 
+        bool playerColour = playerPiece->isPieceWhite();
+        if (!isTurnCorrect(playerColour)) 
+            return;
+
+        // Check moving that piece is valid
+        //if (!playerPiece->isValidMove(destination, board) || !moveSafeFromCheck(source, destination)) {
+        if (!playerPiece->isValidMove(destination, board)) {
+            cerr << playerPieceColour << "'s " << playerPieceName;
+            cerr << " cannot move to " << destinationInput << ". Invalid move" << endl;
+            return;
+        }
+        if (!moveSafeFromCheck(source, destination)) {
+            cerr << playerPieceColour << "'s " << playerPieceName;
+            cerr << " cannot move to " << destinationInput << ".  Self check" << endl;
+            return;
+        }
+        cerr << playerPieceColour << "'s " << playerPieceName;
+        cerr << " moves from " << sourceInput << " to " << destinationInput;
+
+        // Make move
+        makeMove(source, destination, playerPiece);
+
+        // Check for checkmate or stalemate  
+        const char* enemyPieceColour = "White";
+        bool enemyColour = !playerColour;
+        bool enemyInCheck = isInCheck(enemyColour);
+        bool enemyHasLegalMove = moveLeadsToCheckmate(enemyColour);
+        if (!enemyColour)
+            enemyPieceColour = "Black";
+
+        if (!enemyHasLegalMove) { 
+            if (enemyInCheck)
+                cerr << enemyPieceColour << " is in checkmate" << endl;
+            else
+                cerr << enemyPieceColour << " is in stalemate" << endl;
+            printBoard();
+            resetBoard();
+            return;
+        } 
+        else if (enemyInCheck) {
+            cerr << enemyPieceColour << " is in check";
+        }
+    }
+    printBoard();
 }
-

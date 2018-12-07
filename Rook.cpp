@@ -16,12 +16,11 @@ Rook::~Rook() {
 }
 
 bool Rook::isMoveLegal(int xTranslation, int yTranslation) {
-	bool valid = true;
 	if (xTranslation == 0 || yTranslation == 0) {
-		valid = false;
+		return false;
 	}
 	if (xTranslation == 0 && yTranslation == 0) { // Piece not moving
-		valid = false;
+		return false;
 	}
-	return valid;
+	return true;
 }

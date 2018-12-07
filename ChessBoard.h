@@ -23,26 +23,19 @@ public:
 	void initialiseBoard();
 	// Prints all the pieces on the board
 	void printBoard();
-	// Deletes and replaces all existing pieces with nullptr
+	// Deletes and replaces all existing pieces with nullptr and calls initialise board
 	void resetBoard();
 
 	/*************** CHECK USER INPUT AND SET COORDINATES *************/
 
 	// Checks if user input is valid and if it is, sets the coordinates in an int array
 	bool checkInputValid(const char* input, int coordinates[2]);
-	// Check if square has null pointer or piece 
-	bool isSquareEmpty(Piece*, const char*);
 	// Check if it's the current player's turn
 	bool isTurnCorrect(bool isWhite);
 
-	/*************** FOR PRINTING THE PIECE NAME / COLOUR ************/
-
-	const char* printPieceName(Piece* piece);
-	const char* printPieceColour(Piece* piece);
-
 	/********************* CHECK AND SUBMIT MOVE **********************/
 
-	// Makes the move aftering checking for attacking piece, uses tryMove
+	// Makes the move after checking for attacking piece, uses tryMove
 	void makeMove(int source[2], int destination[2], Piece* playerPiece);
 	// Attempts the move; if in check after making the move, reverse with undoMove
 	void tryMove(int source[2], int destination[2], Piece* playerPiece);
@@ -57,12 +50,17 @@ public:
 	*/
 	bool isInCheck (bool playerColour);
 	// Attempts move and checks for check, if true reverts to initial move
-	bool moveSafeFromCheck (int source[2], destination[2]);
+	bool moveSafeFromCheck (int source[2], int destination[2]);
 	/* Takes user input for source and destination and makes piece move 
 	   Uses:
 	   - for input: checkInputValid, isSquareEmpty, isTurnCorrect
 	   - for moving: makeMove, 
 	*/
+	/* For each own piece left in game, iterate through all possible destinations
+	   and check if any are valid and do not result in check
+	*/
+	bool moveLeadsToCheckmate (bool playerColour);
+	// Control function that implements all the above functions 
 	void submitMove(const char* source, const char* destination);
 
 
