@@ -208,12 +208,17 @@ void ChessBoard::getKingCoord (bool playerColour, int kingCoord[2]) {
 bool ChessBoard::isInCheck (bool playerColour) {
     int kingCoord[2];
     getKingCoord(playerColour, kingCoord);
-    for (int i = 0; i < X_MAX; i++) {
+
+    for (int i = 0; i < X_MAX; i++) { // Iterate through board
         for (int j = 0; j < Y_MAX; j++) {
-            if (board[i][j] != NULL) { // there is a piece
-                if (board[i][j]->isPieceWhite() != playerColour) { // enemy piece
-                    if (board[i][j]->isValidMove(kingCoord, board)) // enemy pieces can move to king's location
+
+            if (board[i][j] != NULL) { // There is a piece
+
+                if (board[i][j]->isPieceWhite() != playerColour) { // Enemy piece
+
+                    if (board[i][j]->isValidMove(kingCoord, board)) { // Enemy pieces can move to king's location
                         return true;
+                    }
                 }
             }
         }
@@ -232,31 +237,39 @@ bool ChessBoard::moveSafeFromCheck (int source[2], int destination[2]) {
 
     if (board[xSource][ySource] != NULL)
         playerPiece = board[xSource][ySource];
+
     if (board[xDestination][yDestination] != NULL) 
         temp = board[xDestination][yDestination]; // Keep the piece at destination square
+    
     tryMove(source, destination, playerPiece);
-    if (isInCheck(playerPiece->isPieceWhite()))  // Check if move puts player in check
+    if (isInCheck(playerPiece->isPieceWhite())) { // Check if move puts player in check
         valid = false;
+    }
     undoMove(source, destination, playerPiece);
+
     if (temp != NULL) 
         board[xDestination][yDestination] = temp; // Restore the piece at destination if move invalid
+    
     return valid;
 }
 bool ChessBoard::moveLeadsToCheckmate (bool playerColour) {
-    // Iterate through all non-null pieces 
-    for (int i = 0; i < X_MAX; i++) { 
+    for (int i = 0; i < X_MAX; i++) { // Iterate through all non-null pieces 
         for (int j = 0; j < Y_MAX; j++) {
 
             if (board[i][j] != NULL) { 
                 int source[] = {i, j}; // Get source coordinates
+                
                 if (board[i][j]->isPieceWhite() == playerColour) { // Consider only own pieces
-                    // Iterate through all possible destinations on board
-                    for (int x = 0; x < X_MAX; x++) {  
+                    
+                    for (int x = 0; x < X_MAX; x++) {  // Iterate through all possible destinations on board
                         for (int y = 0; y < Y_MAX; y++) {
                             int destination[] = {x, y}; // Get destination coordinates 
+                            
                             // If there is a valid move to that destination AND
                             // the move doesn't result in check then 
                             if ((board[i][j]->isValidMove(destination, board)) && (moveSafeFromCheck(source, destination))) {
+                                cerr << endl;
+                                cerr << "valid move and safe from check from " << i << " " << j << " to " << x << " " << y << endl;
                                 return false;
                             }
                         }
@@ -270,36 +283,41 @@ bool ChessBoard::moveLeadsToCheckmate (bool playerColour) {
 
  /************************************** FOR CASTLING ***************************************/
 
-bool ChessBoard::castling (int destination[2], bool playerColour) {
-    
-   // 1. king 1st move //
-   // 2. rook 1st move
-   // 3. no pieces in between 
-   // 4. king not in check
-   // 5. king does not move through check 
-   // 6. the king will not be in check after castling 
-   // 7. pieces are not capturing 
-   // 8. king is moving 2 squares / rook 
-   // 9. rook on the right: new pos xKing, yKing+1
-   // 10. rook on the left: new pos xKIng, yKing-1
+/*
+ bool ChessBoard::castling (int destination[2], bool playerColour) {
  
-    int xDestination = destination[0];
-    int yDestination = destination[1]; 
-    int kingCoord[2];
-    getKingCoord(playerColour, kingCoord);
-    int xKing = kingCoord[0];
-    int yKing = kingCoord[1]; 
-    if (board[kingCoord[0]][kingCoord[1] != NULL) 
+    // 1. king 1st move //
+    // 2. rook 1st move
+    // 3. no pieces in between 
+    // 4. king not in check //
+    // 5. king does not move through check // 
+    // 6. the king will not be in check after castling 
+    // 7. pieces are not capturing 
+    // 8. king is moving 2 squares / rook 
+    // 9. rook on the right: new pos xKing, yKing+1
+    // 10. rook on the left: new pos xKIng, yKing-1
+ 
+     bool valid = true;
+     int xDestination = destination[0];
+     int yDestination = destination[1];
+     int kingCoord[2];
+     getKingCoord(playerColour, kingCoord);
+     int xKing = kingCoord[0];
+     int yKing = kingCoord[1]; 
+     if (board[kingCoord[0]][kingCoord[1]] != NULL) 
         Piece* king = board[kingCoord[0]][kingCoord[1];
-
-    if (!( abs(xDestination - xKing == 0) && abs(yDestination - yKing == 2) && king->returnIsFirstMove ))
-        return false;
-    else {
-        if ()
-    }
-
-} 
-
+     
+     if (!( abs(xDestination - xKing == 0) && abs(yDestination - yKing == 2) && king->returnIsFirstMove ))
+         valid = false;
+     if (isInCheck(king->isPieceWhite() ))
+         valid = false;
+     if (!moveSafeFromCheck(kingCoord, destination))
+         valid = false;
+ 
+     if (valid) {
+     
+     }
+ */
 /******************************** CHECK AND SUBMIT MOVE ************************************/
 
 void ChessBoard::submitMove(const char* sourceInput, const char* destinationInput) {

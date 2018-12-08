@@ -14,8 +14,24 @@ int main() {
 
     ChessBoard cb;
     cout << endl;
+/*
+    cb.submitMove("A2", "A3"); //w
+    cout << endl;
+    cb.submitMove("A7", "A5");
+    cout << endl;
+    cb.submitMove("B2", "B4"); //w
+    cout << endl;
+    cb.submitMove("A5", "A4");
+    cout << endl;
+    cb.submitMove("B4", "B5"); //w
+    cout << endl;
+    cb.submitMove("B7", "B6");
+    cout << endl;
+    cb.submitMove("A3", "A4"); //w
+    cout << endl;
+*/
 
-    
+   
     cb.submitMove("D7", "D6");
     cout << endl;
 
