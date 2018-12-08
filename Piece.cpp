@@ -45,9 +45,10 @@ bool Piece::returnIsFirstMove() {
   return isFirstMove;
 }
 void Piece::setXYCoord(int newX, int newY) {
-    xCoord = newX;
-    yCoord = newY;
+  xCoord = newX;
+  yCoord = newY;
 }
+
 bool Piece::isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]) {
     
     int destX = destination[0];

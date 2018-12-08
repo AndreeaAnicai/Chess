@@ -34,7 +34,7 @@ public:
 	bool isTurnCorrect(bool isWhite);
 
     /************************** FOR CASTLING **************************/
-	bool castling (int destination[2], bool playerColour); 
+	bool canCastle (Piece* king, int destination[2]); 
 	
 	/********************* CHECK AND SUBMIT MOVE **********************/
 
@@ -54,16 +54,15 @@ public:
 	bool isInCheck (bool playerColour);
 	// Attempts move and checks for check, if true reverts to initial move
 	bool moveSafeFromCheck (int source[2], int destination[2]);
-	/* Takes user input for source and destination and makes piece move 
-	   Uses:
-	   - for input: checkInputValid, isSquareEmpty, isTurnCorrect
-	   - for moving: makeMove, 
-	*/
 	/* For each own piece left in game, iterate through all possible destinations
 	   and check if any are valid and do not result in check
 	*/
 	bool moveLeadsToCheckmate (bool playerColour);
-	// Control function that implements all the above functions 
+	/* Takes user input for source and destination and makes piece move 
+	   Uses:
+	   - for input: checkInputValid, isSquareEmpty, isTurnCorrect
+	   - for moving: makeMove, moveLeadsToCheckmate, isInCheck, canCastle
+	*/
 	void submitMove(const char* source, const char* destination);
 
 

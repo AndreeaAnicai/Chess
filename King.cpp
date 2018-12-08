@@ -15,11 +15,22 @@ King::~King() {
 }
 
 bool King::isMoveLegal(int xTranslation, int yTranslation) {
-    if (abs(xTranslation) > 1)
-    	return false; // Only 1 step allowed horizontally
-    if (abs(yTranslation) > 1)
-		return false; // Only 1 step allowed vertically
-    if (xTranslation == 0 && yTranslation == 0)
-    	return false; // If the position does not change at all
+    if (isFirstMove) {
+    	if (abs(xTranslation) > 2) // 1 or 2 squares (when castling) horizontally 
+    		return false; 
+    	if (abs(yTranslation) > 1) // Only 1 square vertically
+			return false; 
+    	if (xTranslation == 0 && yTranslation == 0) // If the position does not change at all
+    		return false; 
+    }
+    else {
+    	if (abs(xTranslation) > 1) // Only 1 square horizontally
+    		return false; 
+    	if (abs(yTranslation) > 1) // Only 1 square vertically
+			return false; 
+    	if (xTranslation == 0 && yTranslation == 0) // If the position does not change at all
+    		return false; 
+    }
     return true;
+
 }

@@ -16,7 +16,7 @@ Rook::~Rook() {
 }
 
 bool Rook::isMoveLegal(int xTranslation, int yTranslation) {
-	if (xTranslation == 0 || yTranslation == 0) {
+	if (xTranslation != 0 && yTranslation != 0) {
 		return false;
 	}
 	if (xTranslation == 0 && yTranslation == 0) { // Piece not moving
