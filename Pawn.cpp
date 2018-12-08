@@ -33,13 +33,12 @@ bool Pawn::isDirectionClear(int xTranslation, int yTranslation, Piece* targetPie
     		xStep = 1;
   	else if (xTranslation < 0)
     		xStep = -1;
-    else; 
   	
     if (yTranslation > 0) 
     		yStep = 1;
  	 	else if (yTranslation < 0)
     		yStep = -1;
-    else;
+
   	xCounter = xStep; 
   	yCounter = yStep; 
 

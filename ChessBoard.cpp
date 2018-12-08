@@ -269,7 +269,6 @@ bool ChessBoard::moveLeadsToCheckmate (bool playerColour) {
                             // the move doesn't result in check then 
                             if ((board[i][j]->isValidMove(destination, board)) && (moveSafeFromCheck(source, destination))) {
                                 cerr << endl;
-                                cerr << "valid move and safe from check from " << i << " " << j << " to " << x << " " << y << endl;
                                 return false;
                             }
                         }
@@ -340,10 +339,12 @@ void ChessBoard::submitMove(const char* sourceInput, const char* destinationInpu
     else {
         const char* playerPieceColour = playerPiece->getPieceColour(); 
         const char* playerPieceName = playerPiece->getPieceName();
+        
         // Check turn 
         bool playerColour = playerPiece->isPieceWhite();
         if (!isTurnCorrect(playerColour)) 
             return;
+        
         // Check moving that piece is valid
         //if (!playerPiece->isValidMove(destination, board) || !moveSafeFromCheck(source, destination)) {
         if (!playerPiece->isValidMove(destination, board)) {
@@ -356,10 +357,12 @@ void ChessBoard::submitMove(const char* sourceInput, const char* destinationInpu
             cerr << " cannot move to " << destinationInput << ".  Self check" << endl;
             return;
         }
+
+        // Make move
         cerr << playerPieceColour << "'s " << playerPieceName;
         cerr << " moves from " << sourceInput << " to " << destinationInput;
-        // Make move
         makeMove(source, destination, playerPiece);
+        
         // Check for checkmate or stalemate  
         const char* enemyPieceColour = "White";
         bool enemyColour = !playerColour;
@@ -373,13 +376,14 @@ void ChessBoard::submitMove(const char* sourceInput, const char* destinationInpu
                 cerr << enemyPieceColour << " is in checkmate" << endl;
             else
                 cerr << enemyPieceColour << " is in stalemate" << endl;
-            printBoard();
+            //printBoard();
             resetBoard();
             return;
         } 
         else if (enemyInCheck) {
-            cerr << enemyPieceColour << " is in check";
+            cerr << enemyPieceColour << " is in check" << endl;
+            cerr << endl;
         }
     }
-    printBoard();
+    //printBoard();
 }
