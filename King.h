@@ -1,5 +1,7 @@
 /*****************************************************/ 
-/*  This is the header file King.h
+/*  
+	Andreea Anicai - MSc Computing 2018
+	This is the header file King.h
 	This is the interface for the class King
 */
 /*****************************************************/

@@ -1,5 +1,8 @@
 /******************************************************/
-/* This is the implementation file of the class Rook */
+/* 
+	Andreea Anicai - MSc Computing 2018
+	This is the implementation file of the class Rook 
+*/
 /******************************************************/
 
 #include "Rook.h"

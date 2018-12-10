@@ -1,5 +1,8 @@
 /******************************************************/
-/* This is the implementation file of the class King */
+/* 
+	Andreea Anicai - MSc Computing 2018
+	This is the implementation file of the class King 
+*/
 /******************************************************/
 
 #include "King.h"
@@ -15,22 +18,12 @@ King::~King() {
 }
 
 bool King::isMoveLegal(int xTranslation, int yTranslation) {
-    if (isFirstMove) {
-    	if (abs(xTranslation) > 2) // 1 or 2 squares (when castling) horizontally 
-    		return false; 
-    	if (abs(yTranslation) > 1) // Only 1 square vertically
-			return false; 
-    	if (xTranslation == 0 && yTranslation == 0) // If the position does not change at all
-    		return false; 
-    }
-    else {
-    	if (abs(xTranslation) > 1) // Only 1 square horizontally
-    		return false; 
-    	if (abs(yTranslation) > 1) // Only 1 square vertically
-			return false; 
-    	if (xTranslation == 0 && yTranslation == 0) // If the position does not change at all
-    		return false; 
-    }
+    if (abs(xTranslation) > 1) // Only 1 square horizontally
+    	return false; 
+    if (abs(yTranslation) > 1) // Only 1 square vertically
+		return false; 
+    if (xTranslation == 0 && yTranslation == 0) // If the position does not change at all
+    	return false; 
     return true;
 
 }

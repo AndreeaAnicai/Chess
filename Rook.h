@@ -1,5 +1,7 @@
 /*****************************************************/ 
-/*  This is the header file Rook.h
+/*  
+	Andreea Anicai - MSc Computing 2018
+	This is the header file Rook.h
 	This is the interface for the class Rook
 */
 /*****************************************************/
@@ -17,9 +19,11 @@ public:
 	// Inherits default virtual deconstructor from Piece
 	~Rook();
 
-	// Check if Rook can move to destination based on its rules
-	// Rook moves only horizontally or vertically
-	// abs(xTranslation) == 0 || abs(yTranslation) == 0
+	/*
+	 * Check if Rook can move to destination based on its rules
+	 * Rook moves only horizontally or vertically
+	 * abs(xTranslation) == 0 || abs(yTranslation) == 0
+	*/
 	bool isMoveLegal(int xTranslation, int yTranslation) override;
 }; 
 

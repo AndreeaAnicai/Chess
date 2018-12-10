@@ -1,5 +1,7 @@
 /*****************************************************/ 
-/*  This is the header file Piece.h
+/*  
+    Andreea Anicai - MSc Computing 2018
+    This is the header file Piece.h
 	This is the interface for the class Piece
 	This is intended to be used as a base class to
 	derive classes for all chess pieces 
@@ -39,10 +41,19 @@ public:
 		- whether there are blocking pieces - isDirectionClear()
     */ 
     bool isValidMove(int destination[2], Piece* board[X_MAX][Y_MAX]);
-    // Check if trajectory is blocked by any piece
+    /* 
+     * Check if trajectory is blocked by any piece
+     * Horizontal movement: xTranslation != 0; yTranslation == 0
+     * Vertical movement: xTranslation == 0; yTranslation != 0
+     * Diagonal movement: xTranslation != 0; yTranslation != 0
+     * If white piece - translation is positive 
+     * If black piece - translation is negative 
+    */
     virtual bool isDirectionClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece* board[X_MAX][Y_MAX]);
-    // Check if the move is allowed by each piece's rules
-    // SET AS PURE VIRTUAL FUNCTION
+    /*
+     * Check if the move is allowed by each piece's rules
+     * SET AS PURE VIRTUAL FUNCTION
+    */
     virtual bool isMoveLegal(int xTranslation, int yTranslation) = 0;
 
 protected:
@@ -52,6 +63,6 @@ protected:
     char name; 
     bool isFirstMove;
 
-}; // Piece class
+}; 
 
 #endif //PIECE_H

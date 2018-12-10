@@ -1,5 +1,7 @@
 /*****************************************************/ 
-/*  This is the header file Utilities.h
+/*  
+	Andreea Anicai - MSc Computing 2018
+	This is the header file Utilities.h
 	This is where constant variables are declared
 */
 /*****************************************************/

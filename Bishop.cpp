@@ -1,5 +1,8 @@
 /******************************************************/
-/* This is the implementation file of the class Bishop */
+/* 
+	Andreea Anicai - MSc Computing 2018
+	This is the implementation file of the class Bishop
+*/
 /******************************************************/
 
 #include "Bishop.h"

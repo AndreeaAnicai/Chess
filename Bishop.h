@@ -1,5 +1,7 @@
 /*****************************************************/ 
-/*  This is the header file Bishop.h
+/*  
+	Andreea Anicai - MSc Computing 2018
+	This is the header file Bishop.h
 	This is the interface for the class Bishop
 */
 /*****************************************************/

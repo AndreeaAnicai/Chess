@@ -15,7 +15,7 @@ int main() {
 
     ChessBoard cb;
     cout << endl;
-  /*
+  
   
     cb.submitMove("D7", "D6");
     cout << endl;
@@ -28,15 +28,16 @@ int main() {
 
     cb.submitMove("F8", "B4");
     cout << endl;
-  */
+
+    cb.resetBoard();
+    cout << endl;
+  
 
     cout << "===========================" << endl;
     cout << "Alekhine vs. Vasic (1931)" << endl;
     cout << "===========================" << endl;
     cout << endl;
 
-    cb.resetBoard();
-    cout << endl;
 
     cb.submitMove("E2", "E4");
     cb.submitMove("E7", "E6");
@@ -231,6 +232,7 @@ int main() {
     cb.submitMove("E1", "G1");
     cout << endl;
 
+    
     cout << "===========================" << endl;
     cout << " Paul Morphy v Duke Karl" << endl;
     cout << "===========================" << endl;
@@ -304,6 +306,55 @@ int main() {
     cout << endl;
 
     cb.resetBoard();
-*/
+
+
+    cout << "================++===========" << endl;
+    cout << " Sam Loyd - fastest stalemate" << endl;
+    cout << "=============++==============" << endl;
+    cout << endl;
+
+    cb.submitMove("E2", "E3");
+    cb.submitMove("A7", "A5");
+    cout << endl;
+
+    cb.submitMove("D1", "H5");
+    cb.submitMove("A8", "A6");
+    cout << endl;
+
+    cb.submitMove("H5", "A5");
+    cb.submitMove("H7", "H5");
+    cout << endl;
+
+    cb.submitMove("H2", "H4");
+    cb.submitMove("A6", "H6");
+    cout << endl;
+
+    cb.submitMove("A5", "C7");
+    cb.submitMove("F7", "F6");
+    cout << endl;
+
+    cb.submitMove("C7", "D7");
+    cb.submitMove("E8", "F7");
+    cout << endl;
+
+    cb.submitMove("D7", "B7");
+    cb.submitMove("D8", "D3");
+    cout << endl;
+
+    cb.submitMove("B7", "B8");
+    cb.submitMove("D3", "H7");
+    cout << endl;
+
+    cb.submitMove("B8", "C8");
+    cb.submitMove("F7", "G6");
+    cout << endl;
+
+    cb.submitMove("C8", "E6");
+    cout << endl;
+
+    cb.resetBoard();
+
+    */
+
     return 0;
 }

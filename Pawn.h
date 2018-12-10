@@ -1,5 +1,7 @@
 /*****************************************************/ 
-/*  This is the header file Pawn.h
+/*  
+	Andreea Anicai - MSc Computing 2018
+	This is the header file Pawn.h
 	This is the interface for the class Pawn
 */
 /*****************************************************/
@@ -20,9 +22,11 @@ public:
 	// Override virtual function here because Pawn can move two ways
     bool isDirectionClear(int xTranslation, int yTranslation, Piece* targetPiece, Piece *board[X_MAX][Y_MAX]) override;
 
-	// Check if Pawn can move to destination based on its rules
-	// Advance 1/2 squares when not capturing
-	// Diagonally 1 square when capturing 
+	/*
+	 * Check if Pawn can move to destination based on its rules
+	 * Advance 1/2 squares when not capturing
+	 * Diagonally 1 square when capturing 
+	*/
 	bool isMoveLegal(int xTranslation, int yTranslation) override;
 
 };

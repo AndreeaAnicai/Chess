@@ -1,5 +1,7 @@
 /*****************************************************/ 
-/*  This is the header file Queen.h
+/*  
+	Andreea Anicai - MSc Computing 2018
+	This is the header file Queen.h
 	This is the interface for the class Queen
 */
 /*****************************************************/
@@ -17,10 +19,12 @@ public:
 	// Inherits default virtual deconstructor from Piece
 	~Queen();
 
-	// Check if Queen can move to destination based on its rules
-	// Queen can move diagonally, horizontally, and vertically 
-	// Diagonal - abs(xTranslation) == abs(yTranslation) 
-	// Horizontal + vertical - abs(xTranslation) == 0 || abs(yTranslation) == 0
+	/*
+	 * Check if Queen can move to destination based on its rules
+	 * Queen can move diagonally, horizontally, and vertically 
+	 * Diagonal - abs(xTranslation) == abs(yTranslation) 
+	 * Horizontal + vertical - abs(xTranslation) == 0 || abs(yTranslation) == 0
+	*/
 	bool isMoveLegal(int xTranslation, int yTranslation) override;
 };
 

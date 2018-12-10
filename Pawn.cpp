@@ -1,5 +1,8 @@
 /******************************************************/
-/* This is the implementation file of the class Queen */
+/* 
+   Andreea Anicai - MSc Computing 2018
+   This is the implementation file of the class Queen 
+*/
 /******************************************************/
 
 #include "Pawn.h"
